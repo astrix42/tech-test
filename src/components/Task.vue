@@ -1,5 +1,7 @@
 <template>
   <div>
+    <Navbar v-on:buttonClicked='buttonClicked($event)'/>
+    <div  class='spacer'></div>
     <h1>Currency to ZAR Conversion Tool</h1>
     <b-form >
       <b-row class="my-1">
@@ -33,7 +35,6 @@
         Please select a currency
       </b-form-invalid-feedback>
       <br>
-
     </b-form>
     <button  v-if="noErrors" v-on:click='Calc'>CALC</button>
     <br>
@@ -43,15 +44,14 @@
     </div>
     </div>
     <hr>
-
-
   </div>
 </template>
 
 
 <script>
+import Navbar from './Navbar.vue';
+
 export default {
-  
   data() {
     return {
       selected: 0,
@@ -65,6 +65,9 @@ export default {
       ],
     };
   },
+  components: {
+    Navbar,
+  },
   methods: {
     Calc() {
       this.showCalc = false;
@@ -72,7 +75,10 @@ export default {
         this.zarValue = this.foreignValue / this.selected;
         this.showCalc = true;
       }
-      }
+    },
+    buttonClicked(eventName) {
+      this.$emit('buttonClicked', eventName);
+    },
   },
   computed: {
     validateAmount() {
@@ -99,7 +105,7 @@ export default {
       const ret = {};
       // eslint-disable-next-line
       for (const key in data.data.rates) {
-        ret[data.data.rates[key]]= key;
+        ret[data.data.rates[key]] = key;
       }
       this.options = ret;
     });
@@ -110,5 +116,4 @@ export default {
 .result{
   margin:10px;
 }
-
 </style>

@@ -1,5 +1,7 @@
 <template>
   <div class="hello">
+    <Navbar v-on:buttonClicked='buttonClicked($event)'/>
+    <div  class='spacer'></div>
     <h1>Home</h1>
     <img alt="Vue logo" src="../assets/logo.png">
     <h2>Welcome to Your Vue.js App</h2>
@@ -33,10 +35,20 @@
 </template>
 
 <script>
+import Navbar from './Navbar.vue';
+
 export default {
   name: 'HelloWorld',
   props: {
     msg: String,
+  },
+  components: {
+    Navbar,
+  },
+  methods: {
+    buttonClicked(eventName) {
+      this.$emit('buttonClicked', eventName);
+    },
   },
 };
 </script>
