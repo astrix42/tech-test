@@ -56,13 +56,9 @@ export default {
     return {
       selected: 0,
       foreignValue: 0,
-      zarValue: 0,
       rate: 0,
       showCalc: false,
       noErrors: true,
-      options: [
-
-      ],
     };
   },
   components: {
@@ -72,7 +68,10 @@ export default {
     Calc() {
       this.showCalc = false;
       if (this.noErrors) {
-        this.zarValue = this.foreignValue / this.selected;
+        this.$store.commit('Calc', {
+          foreignValue :this.foreignValue,
+          selected: this.selected,
+        })
         this.showCalc = true;
       }
     },
@@ -98,22 +97,21 @@ export default {
       }
       return false;
     },
+    options(){
+      return this.$store.state.options;
+    },
+    zarValue(){
+      return this.$store.state.zarValue;
+
+    }
   },
   created() {
-    // eslint-disable-next-line
-    this.$http.get('https://api.exchangeratesapi.io/latest?base=ZAR').then(function (data) {
-      const ret = {};
-      // eslint-disable-next-line
-      for (const key in data.data.rates) {
-        ret[data.data.rates[key]] = key;
-      }
-      this.options = ret;
-    });
+    this.$store.commit("getOptions");
   },
 };
 </script>
 <style scoped>
-.result{
-  margin:10px;
-}
+  .result{
+    margin:10px;
+  }
 </style>
